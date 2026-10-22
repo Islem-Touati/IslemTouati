@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Islem Touati – interactive portfolio: finance student, founder of NEXTQUEST.">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<style>
+/* Layout: a soft storybook world — sticky quest bar on top, winding map + region story, then quest log, projects, education, inventory, events, skills, contact. Single cream look, by choice. */
+:root{
+  color-scheme: light;
+  --cream:#fdf8f1;      /* page ground, creamy white */
+  --paper:#fffdf9;      /* cards */
+  --beige:#f1e6d6;      /* soft beige surfaces */
+  --beige-deep:#d9c3a5; /* beige lines, path */
+  --pink:#f4bccb;       /* pastel pink */
+  --pink-soft:#fde8ee;  /* blush fills */
+  --rose:#bf4a70;       /* accent: buttons, highlights */
+  --ink:#3d2a30;        /* text */
+  --muted:#7b6469;
+  --f-display:"Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"DM Mono", ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important; transition:none!important} }
+body{background:var(--cream); color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.6;
+  background-image:radial-gradient(circle at 8% 4%, var(--pink-soft), transparent 32%), radial-gradient(circle at 95% 40%, #f6ecdf, transparent 30%);
+  background-attachment:fixed}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--cream)}
+.gutter{padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px; margin:0 auto}
+main.wrap{display:flex; flex-direction:column; gap:84px; padding-block:36px 72px}
+h1,h2,h3,h4{font-family:var(--f-display); font-weight:700; margin:0; line-height:1.15; text-wrap:balance}
+p{margin:0}
+a{color:var(--rose)}
+:focus-visible{outline:3px solid var(--rose); outline-offset:3px; border-radius:8px}
+.eyebrow{font-family:var(--f-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--rose)}
+section{scroll-margin-top:84px}
+.section-head{display:flex; flex-direction:column; gap:8px; margin-bottom:26px}
+.section-head h2{font-size:clamp(28px,4.4vw,40px)}
+.section-head p{color:var(--muted); max-width:62ch}
+
+/* TOP BAR */
+.bar{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:color-mix(in srgb, var(--cream) 90%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--beige)}
+.bar-in{display:flex; align-items:center; gap:14px; padding-block:10px}
+.logo{font-family:var(--f-display); font-weight:700; font-size:18px; white-space:nowrap; color:var(--ink); text-decoration:none}
+.logo span{color:var(--rose)}
+.nav{display:flex; gap:4px; overflow-x:auto; flex:1; min-width:0; scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-weight:700; font-size:14px; color:var(--muted); text-decoration:none; padding:6px 10px; border-radius:99px; white-space:nowrap}
+.nav a:hover{background:var(--pink-soft); color:var(--rose)}
+.trophy-btn{font:inherit; font-weight:800; font-size:14px; border:none; background:var(--pink); color:var(--ink); padding:7px 12px; border-radius:99px; cursor:pointer; white-space:nowrap; font-variant-numeric:tabular-nums}
+
+/* HERO */
+.hero{display:grid; grid-template-columns:1.35fr 1fr; gap:36px; align-items:center}
+.hero h1{font-size:clamp(46px,8vw,88px); letter-spacing:-.01em}
+.hero h1 .w{color:var(--rose); display:inline-block; animation:wobble 3.5s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg) translateY(-3px)}}
+.hero .lede{font-size:19px; color:var(--muted); max-width:54ch; margin-top:16px}
+.hero .lede b{color:var(--ink)}
+.hero-ctas{display:flex; gap:10px; flex-wrap:wrap; margin-top:22px}
+.btn{font:inherit; font-weight:800; font-size:15px; padding:11px 20px; border-radius:14px; border:2px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; text-decoration:none; display:inline-block; box-shadow:3px 3px 0 var(--ink); transition:transform .12s, box-shadow .12s}
+.btn:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink)}
+.btn.pink{background:var(--pink)}
+.btn:disabled{opacity:.4; cursor:default; transform:none; box-shadow:3px 3px 0 var(--ink)}
+.player{background:var(--paper); border:2px solid var(--ink); border-radius:24px; padding:22px; box-shadow:6px 6px 0 var(--beige-deep); display:flex; flex-direction:column; gap:14px}
+.player-head{display:flex; gap:14px; align-items:center}
+.avatar{width:60px; height:60px; border-radius:18px; background:var(--pink); border:2px solid var(--ink); display:grid; place-items:center; font-family:var(--f-display); font-weight:700; font-size:22px; flex:none}
+.pname{font-family:var(--f-display); font-size:20px; font-weight:700}
+.pclass{font-size:14px; color:var(--muted); line-height:1.4}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.stat{background:var(--beige); border-radius:14px; padding:10px; text-align:center}
+.stat b{display:block; font-family:var(--f-display); font-size:24px; color:var(--rose); font-variant-numeric:tabular-nums}
+.stat small{font-size:12px; color:var(--muted); line-height:1.3; display:block}
+.xp-label{display:flex; justify-content:space-between; font-family:var(--f-mono); font-size:12px; color:var(--muted); margin-bottom:6px}
+.xp-bar{height:12px; background:var(--beige); border-radius:99px; overflow:hidden; border:1.5px solid var(--ink)}
+.xp-bar i{display:block; height:100%; width:10%; background:repeating-linear-gradient(45deg,var(--pink),var(--pink) 8px,#f7cfda 8px,#f7cfda 16px); transition:width .6s ease}
+
+/* WORLD MAP */
+.world{display:grid; grid-template-columns:340px 1fr; gap:32px; align-items:start}
+.map{position:sticky; top:calc(env(safe-area-inset-top,0px) + 76px)}
+.map svg{width:100%; height:auto; display:block}
+.strip{display:none}
+.node{cursor:pointer}
+.node .ring{fill:var(--paper); stroke:var(--ink); stroke-width:2; transition:fill .2s}
+.node:hover .ring{fill:var(--pink-soft)}
+.node.visited .ring{fill:var(--beige)}
+.node.active .ring{fill:var(--pink)}
+.node .num{font-family:var(--f-mono); font-size:13px; fill:var(--ink); text-anchor:middle; dominant-baseline:central}
+.node .lbl{font-family:var(--f-display); font-weight:600; font-size:14px; fill:var(--ink)}
+.node .era{font-family:var(--f-mono); font-size:10px; fill:var(--muted)}
+.node:focus{outline:none}
+.node:focus-visible .ring{stroke:var(--rose); stroke-width:3}
+#walker{transition:transform .9s cubic-bezier(.6,.05,.3,1)}
+.panel{background:var(--paper); border:2px solid var(--ink); border-radius:24px; padding:30px; box-shadow:6px 6px 0 var(--pink); display:flex; flex-direction:column; gap:18px; min-width:0}
+.panel.pop{animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(.98)} 60%{transform:scale(1.01)} 100%{transform:none}}
+.panel h3{font-size:clamp(24px,3.4vw,32px)}
+.panel h3 .rg{color:var(--rose)}
+.panel .story{font-size:17px; max-width:62ch}
+.mini{font-family:var(--f-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px}
+.loot{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px}
+.loot li{display:grid; grid-template-columns:20px 1fr; gap:8px}
+.loot li::before{content:"✦"; color:var(--rose)}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tag{font-size:13px; font-weight:700; padding:4px 11px; border-radius:99px; background:var(--pink-soft); color:var(--rose)}
+.pnav{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; padding-top:14px; border-top:2px dashed var(--beige-deep)}
+
+/* QUEST LOG */
+.quests{display:flex; flex-direction:column; gap:14px}
+details.quest{background:var(--paper); border:2px solid var(--ink); border-radius:20px; overflow:hidden}
+details.quest[open]{box-shadow:5px 5px 0 var(--beige-deep)}
+details.quest summary{list-style:none; cursor:pointer; padding:18px 22px; display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center}
+details.quest summary::-webkit-details-marker{display:none}
+.q-ico{width:46px; height:46px; border-radius:14px; background:var(--beige); display:grid; place-items:center; font-size:22px}
+.q-title{font-family:var(--f-display); font-weight:700; font-size:19px; line-height:1.25}
+.q-org{color:var(--muted); font-size:14px}
+.q-when{font-family:var(--f-mono); font-size:12px; color:var(--rose); text-align:right; white-space:nowrap}
+.q-plus{display:inline-block; transition:transform .2s; font-weight:800; margin-left:8px}
+details[open] .q-plus{transform:rotate(45deg)}
+.q-body{padding:0 22px 22px 84px; display:flex; flex-direction:column; gap:12px}
+.q-body ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px}
+.q-body li::marker{color:var(--rose)}
+.status{font-family:var(--f-mono); font-size:11px; padding:3px 8px; border-radius:6px; background:var(--pink); color:var(--ink); margin-left:6px; vertical-align:middle}
+
+/* PROJECTS */
+.projects{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px}
+.proj{font:inherit; text-align:left; color:inherit; background:var(--paper); border:2px solid var(--ink); border-radius:22px; padding:22px; display:flex; flex-direction:column; gap:10px; cursor:pointer; box-shadow:4px 4px 0 var(--ink); transition:transform .15s, box-shadow .15s}
+.proj:hover{transform:translate(-2px,-3px) rotate(-.4deg); box-shadow:6px 7px 0 var(--ink)}
+.proj.star{background:var(--pink)}
+.proj .p-ico{font-size:30px}
+.proj h3{font-size:21px}
+.proj p{font-size:15px; color:var(--muted)}
+.proj.star p{color:var(--ink)}
+.proj .open{margin-top:auto; font-weight:800; color:var(--rose); font-size:14px}
+.proj.star .open{color:var(--ink)}
+dialog{border:2px solid var(--ink); border-radius:24px; padding:0; max-width:min(680px, calc(100vw - 32px)); width:100%; background:var(--paper); color:var(--ink); box-shadow:8px 8px 0 var(--pink)}
+dialog::backdrop{background:rgba(61,42,48,.35)}
+.dlg{padding:28px; display:flex; flex-direction:column; gap:16px; max-height:80vh; overflow-y:auto}
+.dlg h3{font-size:26px}
+.dlg h4{font-size:16px; color:var(--rose)}
+.dlg ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px}
+.dlg .close{align-self:flex-end}
+.quote{font-family:var(--f-display); font-size:20px; background:var(--beige); border-radius:16px; padding:14px 18px}
+.steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px}
+.step{background:var(--pink-soft); border-radius:12px; padding:10px; font-size:14px; font-weight:700}
+.step small{display:block; font-family:var(--f-mono); color:var(--rose); font-size:11px}
+
+/* EDUCATION */
+.timeline{position:relative; display:flex; flex-direction:column; gap:16px; padding-left:28px}
+.timeline::before{content:""; position:absolute; left:9px; top:6px; bottom:6px; width:3px; background:repeating-linear-gradient(var(--beige-deep) 0 8px, transparent 8px 14px)}
+.edu{position:relative; background:var(--paper); border:2px solid var(--beige-deep); border-radius:18px; padding:18px 20px}
+.edu::before{content:""; position:absolute; left:-27px; top:22px; width:16px; height:16px; border-radius:50%; background:var(--pink); border:2px solid var(--ink)}
+.edu.now::before{background:var(--rose)}
+.edu .when{font-family:var(--f-mono); font-size:12px; color:var(--rose)}
+.edu h3{font-size:19px; margin:4px 0 2px}
+.edu .where{color:var(--muted); font-size:14px}
+.edu ul{margin:10px 0 0; padding-left:18px; font-size:15px; display:flex; flex-direction:column; gap:4px}
+.paths{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:24px}
+.path{background:var(--beige); border-radius:18px; padding:16px}
+.path b{font-family:var(--f-display); font-size:17px; display:block}
+.path span{font-size:14px; color:var(--muted)}
+
+/* INVENTORY */
+.inv-tools{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:20px}
+.search{flex:1 1 220px; min-width:0; font:inherit; padding:10px 14px; border-radius:14px; border:2px solid var(--ink); background:var(--paper); color:var(--ink)}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{font:inherit; font-size:14px; font-weight:700; padding:7px 13px; border-radius:99px; border:2px solid var(--beige-deep); background:var(--paper); color:var(--muted); cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--cream)}
+.count{font-family:var(--f-mono); font-size:13px; color:var(--muted); margin-bottom:12px}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px}
+.item{background:var(--paper); border:2px solid var(--beige); border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:4px; min-width:0; transition:border-color .15s, transform .15s}
+.item:hover{border-color:var(--pink); transform:translateY(-2px)}
+.item .iss{font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--rose)}
+.item .nm{font-weight:800; line-height:1.3}
+.item .ds{font-size:14px; color:var(--muted); line-height:1.45}
+.item .dt{font-size:12px; color:var(--muted); margin-top:auto; padding-top:6px; font-family:var(--f-mono)}
+.empty{color:var(--muted); padding:20px 0}
+
+/* EVENTS */
+.events{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px}
+.ev{background:var(--paper); border-radius:18px; border:2px dashed var(--beige-deep); padding:16px 18px; display:flex; flex-direction:column; gap:6px}
+.ev .d{font-family:var(--f-mono); font-size:12px; color:var(--rose)}
+.ev b{font-family:var(--f-display); font-size:17px; font-weight:600; line-height:1.3}
+.ev .o{font-size:13px; color:var(--muted)}
+.ev p{font-size:14px}
+
+/* HONOURS */
+.honours{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+.medal{background:var(--pink); border:2px solid var(--ink); border-radius:22px; padding:22px; display:flex; flex-direction:column; gap:8px; box-shadow:4px 4px 0 var(--ink)}
+.medal.beige{background:var(--beige)}
+.medal .m{font-size:34px}
+.medal h3{font-size:20px}
+.medal p{font-size:15px}
+
+/* SKILLS */
+.skills{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.card{background:var(--paper); border:2px solid var(--ink); border-radius:22px; padding:24px; display:flex; flex-direction:column; gap:14px; min-width:0}
+.card h3{font-size:21px}
+.row{display:grid; grid-template-columns:120px 1fr 52px; gap:10px; align-items:center; font-size:15px}
+.row .tr{height:10px; background:var(--beige); border-radius:99px; overflow:hidden}
+.row .tr i{display:block; height:100%; background:var(--rose); border-radius:99px}
+.row .lv{font-family:var(--f-mono); font-size:12px; text-align:right; color:var(--rose)}
+.pills{display:flex; flex-wrap:wrap; gap:6px}
+.pill{font-size:14px; font-weight:700; padding:6px 12px; border-radius:99px; background:var(--beige)}
+.pill.p{background:var(--pink-soft); color:var(--rose)}
+.note{font-size:13px; color:var(--muted)}
+
+/* CONTACT */
+.contact{background:var(--pink); border:2px solid var(--ink); border-radius:28px; padding:36px; display:grid; grid-template-columns:1.3fr 1fr; gap:24px; align-items:center; box-shadow:8px 8px 0 var(--ink)}
+.contact h2{font-size:clamp(28px,4vw,40px)}
+.contact p{margin-top:10px; max-width:48ch}
+.c-actions{display:flex; flex-direction:column; gap:10px; min-width:0}
+.c-actions code{font-family:var(--f-mono); font-size:14px; background:var(--paper); border:2px solid var(--ink); padding:10px 12px; border-radius:12px; user-select:all; word-break:break-all}
+footer{text-align:center; padding-block:0 40px; color:var(--muted); font-size:14px}
+footer b{font-family:var(--f-display); color:var(--rose); font-size:18px; display:block; margin-bottom:4px}
+
+/* TOAST + TROPHIES */
+.toast{position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translate(-50%,140%); background:var(--ink); color:var(--cream); padding:12px 18px; border-radius:16px; display:flex; gap:12px; align-items:center; z-index:40; transition:transform .35s cubic-bezier(.3,1.4,.5,1); max-width:calc(100vw - 32px)}
+.toast.show{transform:translate(-50%,0)}
+.toast .ti{font-size:24px}
+.toast small{display:block; color:var(--pink); font-family:var(--f-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase}
+.trophies{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px}
+.tro{border:2px dashed var(--beige-deep); border-radius:16px; padding:12px; text-align:center; font-size:14px; color:var(--muted)}
+.tro .i{font-size:26px; display:block; filter:grayscale(1); opacity:.4}
+.tro.on{border-style:solid; border-color:var(--ink); background:var(--pink-soft); color:var(--ink)}
+.tro.on .i{filter:none; opacity:1}
+.tro b{display:block; font-family:var(--f-display); font-weight:600}
+.confetti{position:fixed; inset:0; pointer-events:none; z-index:39}
+
+@media (max-width: 880px){
+  .hero,.world,.skills,.contact{grid-template-columns:1fr}
+  .map{position:static}
+  .map svg{display:none}
+  .strip{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px; scrollbar-width:thin}
+  .strip button{flex:none; font:inherit; font-weight:800; font-size:14px; padding:8px 14px; border-radius:14px; border:2px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; white-space:nowrap}
+  .strip button.active{background:var(--pink)}
+  .strip button.visited{background:var(--beige)}
+  .strip button.active.visited{background:var(--pink)}
+  .panel{padding:22px}
+  .q-body{padding:0 18px 18px 18px}
+  details.quest summary{grid-template-columns:auto 1fr; padding:16px}
+  .q-when{grid-column:2; text-align:left}
+  .contact{padding:24px}
+  .nav{display:none}
+  .bar-in{justify-content:space-between}
+}
+@media (max-width: 420px){ .row{grid-template-columns:96px 1fr 46px} .stat b{font-size:20px} }
+</style>
+<title>Islem World</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@500&display=swap">
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap gutter bar-in">
+    <a class="logo" href="#top">Islem <span>World</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#map">Map</a><a href="#quests">Experience</a><a href="#projects">Projects</a><a href="#education">Education</a><a href="#inventory">Certifications</a><a href="#events">Events</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+    </nav>
+    <button class="trophy-btn" id="trophyBtn" type="button" aria-controls="trophyDlg">🏆 <span id="trophyCount">0/8</span></button>
+  </div>
+</header>
+
+<main class="wrap gutter" id="top">
+
+  <section class="hero" aria-label="Introduction">
+    <div>
+      <p class="eyebrow">Welcome, traveller</p>
+      <h1>Islem <span class="w">World</span></h1>
+      <p class="lede">Hi, I'm <b>Islem Touati</b>, a finance and banking student from Sousse, Tunisia. I learn in public, build things for students, and say yes to doors that open abroad. Explore my world, open the quests, and collect the 8 hidden trophies on the way.</p>
+      <div class="hero-ctas">
+        <a class="btn pink" href="#map">Start the journey</a>
+        <a class="btn" href="#projects">See my projects</a>
+      </div>
+    </div>
+    <aside class="player" aria-label="Player card">
+      <div class="player-head">
+        <div class="avatar" aria-hidden="true">IT</div>
+        <div>
+          <div class="pname">Islem Touati</div>
+          <div class="pclass">Class: Finance Explorer · Founder & President of NEXTQUEST · AI QA Specialist</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>120+</b><small>certificates</small></div>
+        <div class="stat"><b>70+</b><small>students reached</small></div>
+        <div class="stat"><b>4</b><small>languages</small></div>
+      </div>
+      <div>
+        <div class="xp-label"><span>Your exploration</span><span id="xpText">10%</span></div>
+        <div class="xp-bar"><i id="xpBar"></i></div>
+      </div>
+    </aside>
+  </section>
+
+  <section id="map" aria-labelledby="map-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 1 · The map</p>
+      <h2 id="map-h">Seven regions, one storyline</h2>
+      <p>Tap a region to travel there. The road runs from where I started to the castle I'm building today.</p>
+    </div>
+    <div class="world">
+      <nav class="map" aria-label="Regions">
+        <svg id="mapSvg" viewBox="0 0 340 980" role="group" aria-label="World map"></svg>
+        <div class="strip" id="strip"></div>
+      </nav>
+      <article class="panel" id="panel" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <section id="quests" aria-labelledby="q-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 2 · Quest log</p>
+      <h2 id="q-h">Professional experience</h2>
+      <p>Every role I've taken on, newest first. Open a quest to read what I did.</p>
+    </div>
+    <div class="quests" id="questList"></div>
+  </section>
+
+  <section id="projects" aria-labelledby="p-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 3 · Workshop</p>
+      <h2 id="p-h">Projects</h2>
+      <p>Research, ventures and challenges I've built or joined. Tap a card for the full story.</p>
+    </div>
+    <div class="projects" id="projGrid"></div>
+  </section>
+
+  <section id="education" aria-labelledby="e-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 4 · Training grounds</p>
+      <h2 id="e-h">Education and training</h2>
+    </div>
+    <div class="timeline" id="eduList"></div>
+    <div class="paths" id="pathList"></div>
+  </section>
+
+  <section id="inventory" aria-labelledby="i-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 5 · Inventory</p>
+      <h2 id="i-h">Certifications</h2>
+      <p>Search or filter my certificates by the skill each one unlocked.</p>
+    </div>
+    <div class="inv-tools">
+      <input class="search" id="search" type="search" placeholder="Search: AI, finance, Stanford…" aria-label="Search certifications">
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="events" aria-labelledby="ev-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 6 · Side quests</p>
+      <h2 id="ev-h">Conferences, seminars and awards</h2>
+    </div>
+    <div class="honours" style="margin-bottom:20px">
+      <div class="medal"><span class="m">🏅</span><h3>Official Winner, Wajahni Caravan 2026</h3><p>Selected among the official winners in Sousse after placing first in a knowledge quiz and reaching one of the top scores; awarded a tuition fee reduction. August 2026.</p></div>
+      <div class="medal beige"><span class="m">💌</span><h3>Letter of recognition, MAI Foundation</h3><p>Recognized by the Foundation's Global Leadership for stepping in and moderating three sessions at CAEF2026.</p></div>
+      <div class="medal beige"><span class="m">🤝</span><h3>Student Club for Entrepreneurial Culture</h3><p>Member: company visits, leadership and entrepreneurship sessions, seminars, and business-creation fairs.</p></div>
+    </div>
+    <div class="events" id="evList"></div>
+  </section>
+
+  <section id="skills" aria-labelledby="s-h">
+    <div class="section-head">
+      <p class="eyebrow">Chapter 7 · Character sheet</p>
+      <h2 id="s-h">Skills and languages</h2>
+    </div>
+    <div class="skills">
+      <div class="card">
+        <h3>Languages</h3>
+        <div class="row"><span>Arabic</span><div class="tr"><i style="width:100%"></i></div><span class="lv">Native</span></div>
+        <div class="row"><span>English</span><div class="tr"><i style="width:90%"></i></div><span class="lv">C1–C2</span></div>
+        <div class="row"><span>French</span><div class="tr"><i style="width:88%"></i></div><span class="lv">C1–C2</span></div>
+        <div class="row"><span>Spanish</span><div class="tr"><i style="width:32%"></i></div><span class="lv">A2–B1</span></div>
+        <p class="note">EF SET English certificate: C1 Advanced.</p>
+      </div>
+      <div class="card">
+        <h3>Digital competence</h3>
+        <div class="row"><span>Information & data</span><div class="tr"><i style="width:100%"></i></div><span class="lv">6/6</span></div>
+        <div class="row"><span>Communication</span><div class="tr"><i style="width:100%"></i></div><span class="lv">6/6</span></div>
+        <div class="row"><span>Problem solving</span><div class="tr"><i style="width:100%"></i></div><span class="lv">6/6</span></div>
+        <div class="row"><span>Safety</span><div class="tr"><i style="width:83%"></i></div><span class="lv">5/6</span></div>
+        <div class="row"><span>Content creation</span><div class="tr"><i style="width:50%"></i></div><span class="lv">3/6</span></div>
+        <p class="note">Self-assessment based on the EU Digital Competence Framework 2.1.</p>
+      </div>
+      <div class="card">
+        <h3>Hard skills</h3>
+        <div class="pills">
+          <span class="pill p">Banking & finance</span><span class="pill p">Project management</span><span class="pill p">FinTech & neobanks</span><span class="pill">Accounting basics</span><span class="pill">AI evaluation & prompting</span><span class="pill">Responsible AI</span><span class="pill">Graphic design (Adobe)</span><span class="pill">UI/UX (Adobe XD)</span><span class="pill">HTML · CSS · JavaScript</span><span class="pill">Digital & social media marketing</span><span class="pill">Blockchain (Hedera)</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Soft skills</h3>
+        <div class="pills">
+          <span class="pill p">Leadership & mentoring</span><span class="pill p">Public speaking</span><span class="pill">Critical thinking</span><span class="pill">Problem solving</span><span class="pill">Adaptability under pressure</span><span class="pill">Time management</span><span class="pill">Cross-cultural communication</span><span class="pill">Self-directed learning</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="c-h">
+    <div class="contact">
+      <div>
+        <p class="eyebrow" style="color:var(--ink)">Final chapter</p>
+        <h2 id="c-h">Let's start a quest together</h2>
+        <p>I'm open to international exchanges, collaborations and new opportunities in finance, education and innovation.</p>
+      </div>
+      <div class="c-actions">
+        <code id="mail">touati_islem123@yahoo.com</code>
+        <button class="btn" id="copy" type="button">Copy my email</button>
+        <a class="btn" href="https://www.linkedin.com/in/islem-touati-pro/" target="_blank" rel="noopener">Visit my LinkedIn ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="gutter"><b>We Don't Inherit Paths. We Draw Them.</b>Islem Touati · Sousse, Tunisia · 2026</footer>
+
+<dialog id="projDlg" aria-labelledby="pd-title"><div class="dlg" id="projBody"></div></dialog>
+<dialog id="trophyDlg" aria-labelledby="td-title"><div class="dlg">
+  <button class="btn close" type="button" data-close>Close</button>
+  <h3 id="td-title">Trophy shelf</h3>
+  <p style="color:var(--muted)">Explore the site to unlock all 8 trophies.</p>
+  <div class="trophies" id="trophyGrid"></div>
+</div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"><span class="ti" id="toastIcon">🏆</span><span><small>Trophy unlocked</small><b id="toastText"></b></span></div>
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>
+/* ---------- DATA ---------- */
+const REGIONS = [
+  {name:"Spawn Point", era:"Age 17", x:90, y:70, title:"Where the quest began",
+   story:"At 17 I discovered online learning and never stopped. Free courses became a daily habit, and that habit became more than 120 certificates in finance, AI, design, leadership and global affairs.",
+   loot:["<b>Mathematics Baccalaureate</b> · Lycée Secondaire Sahloul 4, 2023","<b>Elements of AI</b> · University of Helsinki","<b>CS50 for Business Professionals</b> · Harvard University"],
+   tags:["Self-directed learning","Curiosity","Discipline"]},
+  {name:"Design Valley", era:"2024", x:250, y:210, title:"Making ideas visible",
+   story:"At 19 I earned my first diploma, in graphic design, together with training in front-end web development and digital marketing. It taught me to turn messy ideas into things people can see and use.",
+   loot:["<b>Professional Diploma in Infographics</b> · Horizon Academy of Professional Training","<b>Front-End Web Development</b> · HTML, CSS, JavaScript","<b>Adobe Suite</b> · Photoshop, Illustrator, InDesign, Premiere, XD"],
+   tags:["Graphic design","UI/UX","Digital marketing"]},
+  {name:"Finance City", era:"2023 – now", x:90, y:350, title:"The heart of my studies",
+   story:"I study economics with a specialization in Money, Finance, Banking and Insurance, now at IHEC Sousse. In parallel I'm earning a Bachelor of Business Administration at the University of the People, fully online.",
+   loot:["<b>Licence MFBA</b> · IHEC Sousse, 3rd year","<b>BBA</b> · University of the People, since 2025","<b>Career Essentials in Project Management</b> · Microsoft & LinkedIn"],
+   tags:["Banking","Finance","Economics","Project management"]},
+  {name:"Global Harbor", era:"2025 – 2026", x:250, y:490, title:"Opening doors abroad",
+   story:"I prepared my own Erasmus application to Spain with no guide, and it changed how I see opportunity. Then came an incubation program in Spain, online missions with the United Nations, and an international climate forum.",
+   loot:["<b>Incubadora Con Valores</b> · incubation and AI programs, Spain","<b>UN Volunteers</b> · Ambassador of Change and campaign volunteer","<b>MAI Foundation</b> · moderated 3 sessions at CAEF2026","<b>Wajahni Caravan 2026</b> · official winner"],
+   tags:["Erasmus","Entrepreneurship","Sustainability","Public speaking"]},
+  {name:"AI Frontier", era:"2025 – now", x:90, y:630, title:"Working with AI, responsibly",
+   story:"I work as a freelance AI QA Specialist: I review AI-generated content, write prompts and record voice data that improves speech technology. I also studied how AI creates value in finance and how to use it ethically.",
+   loot:["<b>AI QA Specialist</b> · Volga Partners","<b>Microsoft AI for Business & Finance Leaders</b> · Microsoft Learn","<b>Ethics of AI</b> · University of Helsinki"],
+   tags:["AI evaluation","Prompt engineering","Responsible AI"]},
+  {name:"Quest Lab", era:"Projects", x:250, y:770, title:"Research and projects",
+   story:"This is where my studies meet real questions: how banks survive the rise of FinTechs and neobanks, how organizations turn information into strategy, and how blockchain can serve real use cases.",
+   loot:["<b>Neobank research</b> · banking digitalization and the FinTech challenge","<b>Economic Intelligence project</b> · IHEC Sousse","<b>Hedera Cross Campus Challenge 2026</b> · blockchain hackathon"],
+   tags:["FinTech","Neobanks","Economic intelligence","Blockchain"]},
+  {name:"NEXTQUEST Castle", era:"2026 – now", x:170, y:910, castle:true, title:"The castle I'm building",
+   story:"I founded NEXTQUEST to give students the guide I never had. It helps young people build recruiter-ready profiles and take control of their academic and professional path.",
+   loot:["<b>Founder & President</b> · program, brand and team","<b>70+ students reached</b> in the first workshops","<b>Next stage</b> · a personalized learning and career-guidance platform"],
+   tags:["Leadership","Career guidance","EdTech"]}
+];
+
+const QUESTS = [
+  {ico:"🏰", t:"Founder & President", o:"NEXTQUEST · Tunisia", w:"Sep 2026 – now", now:true,
+   intro:"I founded NEXTQUEST to help students bridge the gap between academic training and professional readiness, through peer-led workshops and practical learning.",
+   b:["Designed the program and curriculum: digital literacy, AI tools for research and studying, e-learning strategies, CVs and cover letters, personal branding and international mobility (Erasmus+, exchanges, scholarships).","Facilitated interactive workshops for 70+ undergraduate students, mixing theory, case studies and hands-on exercises.","Coordinate a student team across communication, graphic design, event planning and logistics.","Building the next stage: a personalized learning and career-guidance platform for students in Tunisia and North Africa."],
+   s:["Educational leadership","Curriculum design","Workshop facilitation","Career guidance"]},
+  {ico:"🤖", t:"AI QA Specialist", o:"Volga Partners · Freelance, remote", w:"Aug 2026 – Oct 2026",
+   intro:"Mission-based work on AI training and evaluation projects, focused on data quality and model performance.",
+   b:["Reviewed and assessed AI-generated content for accuracy, coherence and relevance, following detailed quality guidelines.","Wrote and refined prompts and produced reference answers across a wide range of topics.","Took part in the Global AI English Voice Study, recording English speech data used to improve speech recognition and synthesis."],
+   s:["Quality assurance","AI evaluation","Prompt engineering","Attention to detail"]},
+  {ico:"🎙️", t:"Session Moderator", o:"MAI Foundation · CAEF2026, online", w:"Aug – Sep 2026",
+   intro:"Moderator at the Climate Action & Education Forum 2026, an international online forum on climate action, sustainability and education.",
+   b:["Initially assigned to one session, I stepped in as a replacement and moderated three sessions in total on sustainable finance and the green economy.","Introduced speakers, guided discussions and managed timing and Q&A with an international audience.","Received a letter of recognition from the Foundation's Global Leadership."],
+   s:["Public speaking","Event moderation","Sustainable finance","Green economy"]},
+  {ico:"🌍", t:"Ambassador of Change", o:"United Nations Volunteers (UNV) · Online", w:"Feb – Jun 2026",
+   intro:"Online volunteer assignment supporting UNV digital communication and youth engagement on sustainable development.",
+   b:["Supported UNV Online social media campaigns, contributing to audience growth of 5,000+ users.","Worked with international teams to design and run outreach strategies aligned with organizational goals.","Tracked engagement, reach and impressions, and adjusted content to raise audience interaction by more than 20%."],
+   s:["Social media strategy","Youth engagement","SDGs","Analytics"]},
+  {ico:"📣", t:"Social Media Engagement Lead", o:"UN Volunteers with the Swiss Embassy in Tunisia · Gabès Outreach", w:"Apr 2025",
+   intro:"My first professional experience: an online UN volunteer assignment promoting the Gabès Outreach campaign.",
+   b:["Managed the event's visibility on Facebook, Instagram, Twitter and LinkedIn, designing and publishing posts, stories, visuals and videos.","Engaged a young audience by adapting content style and format to each platform while keeping a consistent visual identity.","Strengthened my skills in digital communication, content strategy and community management."],
+   s:["Content creation","Community management","Campaign management"]},
+  {ico:"🏪", t:"Intern", o:"Magasin Général · Sousse", w:"Aug 2024 · 15 days",
+   intro:"Internship organized with the Ministry of Higher Education in one of Tunisia's main retail chains.",
+   b:["Worked alongside the finance, customer service, reception and sales departments to understand business operations.","Helped customers find solutions suited to their needs.","Built organizational and prioritization skills by handling tasks across several departments."],
+   s:["Retail operations","Customer service","Organization"]}
+];
+
+const PROJECTS = [
+  {id:"nq", star:true, ico:"🏰", t:"NEXTQUEST", s:"My student initiative for employability, mobility and personal branding.",
+   body:`<p class="quote">We Don't Inherit Paths. We Draw Them.</p>
+   <h4>The problem</h4><p>When I applied for Erasmus, I prepared my scholarship file, cover letter and CV alone, with no guide. Many students face the same wall, and good profiles get lost because nobody showed them how to present themselves.</p>
+   <h4>The solution</h4><p>NEXTQUEST is a student-led academic initiative that gives students practical tools to build a recruiter-ready profile and grow their technical and soft skills.</p>
+   <h4>First-semester workshops</h4>
+   <div class="steps"><div class="step"><small>01</small>AI in academic life</div><div class="step"><small>02</small>University navigation</div><div class="step"><small>03</small>Online learning</div><div class="step"><small>04</small>LinkedIn & professional identity</div><div class="step"><small>05</small>Erasmus & mobility</div></div>
+   <h4>Traction so far</h4><ul><li>Two workshops held, with about 30 and 40 participants.</li><li>Before NEXTQUEST, I ran a 3-hour intensive workshop on CVs, cover letters and interviews for 30+ students; most later found internships in Tunisia or abroad.</li><li>Helped dozens of students build their profiles, and helped two of them go abroad.</li></ul>
+   <h4>Vision</h4><p>A personalized platform: a hub of mostly free online resources filtered by student profile, workshops supervised by academics and AI experts, and support for CVs, cover letters, LinkedIn, languages and progress tracking. Tunisian students first, then Algeria and Morocco.</p>`},
+  {id:"neo", ico:"🏦", t:"Neobanks vs. Traditional Banks", s:"Research on banking digitalization and the FinTech challenge.",
+   body:`<p class="quote">« La numérisation bancaire et le défi des FinTech et Néobanques »</p>
+   <h4>Research question</h4><p>How can traditional banks respond to FinTechs and neobanks in the digital era?</p>
+   <h4>What the research covers</h4><ul><li>How banking digitalization is changing customer expectations and the way banks operate.</li><li>The business models of FinTechs and neobanks, and why they attract users.</li><li>The strategic responses open to traditional banks: transformation, partnership or competition.</li></ul>
+   <h4>My role</h4><p>Individual research presented in a group defense at IHEC Sousse in October 2026; I presented the introduction, the third part and the conclusion.</p>`},
+  {id:"ie", ico:"🔎", t:"Economic Intelligence", s:"Course project on turning information into strategic advantage.",
+   body:`<h4>Context</h4><p>A project for the « L'Intelligence Économique » course at IHEC Sousse, prepared and co-presented as a structured, PFE-style presentation.</p>
+   <h4>What economic intelligence covers</h4>
+   <div class="steps"><div class="step"><small>Watch</small>Collecting and monitoring strategic information</div><div class="step"><small>Protect</small>Securing sensitive information and assets</div><div class="step"><small>Influence</small>Using information to shape decisions</div></div>
+   <h4>What I gained</h4><ul><li>A method for analyzing a market or competitor with structured information.</li><li>Experience presenting a complex topic clearly to an academic jury.</li></ul>`},
+  {id:"inc", ico:"🚀", t:"Startup incubation in Spain", s:"Taking my first business idea through Incubadora Con Valores.",
+   body:`<h4>The program</h4><p>A three-month international digital incubation program with Incubadora Con Valores (Spain), followed by a 4-week, 12-hour AI program in July 2026.</p>
+   <h4>What I did</h4><ul><li>Developed and validated my first business idea through structured training, mentoring and market testing (60+ hours of practical work).</li><li>Designed a business model and tested the project's hypotheses with real users.</li><li>Took part in coaching and group sessions in an English-speaking, international cohort.</li><li>In the AI program: ChatGPT for business, email marketing, and video and photo editing.</li></ul>`},
+  {id:"hed", ico:"⛓️", t:"Hedera Cross Campus Challenge", s:"Blockchain bootcamps and a campus hackathon at IHEC Sousse.", tag:"Ongoing",
+   body:`<h4>The challenge</h4><p>A program run by 4C IHEC Sousse with Hedera, starting October 2026: an info session, two certification bootcamps, hackathon preparation and a campus hackathon day.</p>
+   <div class="steps"><div class="step"><small>10 Oct</small>Info session</div><div class="step"><small>16 Oct</small>Bootcamp 1: HCF certificate</div><div class="step"><small>19 Oct</small>Bootcamp 2: HCDA certificate</div><div class="step"><small>Next</small>Hackathon</div></div>
+   <h4>My goal</h4><p>Earn the Hedera Certified Foundation certificate and build a hackathon project at the meeting point of blockchain and finance.</p>`}
+];
+
+const EDU = [
+  {w:"Aug 2025 – now", now:true, t:"Bachelor of Business Administration (BBA)", p:"University of the People, California, United States · 100% online",
+   b:["120-credit degree covering accounting, finance, marketing, management and economics.","Business analysis, decision-making and strategic planning applied to real case studies."]},
+  {w:"Sep 2025 – now", now:true, t:"Licence in Economics: Money, Finance, Banking and Insurance (MFBA)", p:"IHEC Sousse, Université de Sousse · 3rd year"},
+  {w:"Feb – Jul 2026", t:"Digital Incubation Program and AI Program", p:"Incubadora Con Valores, Spain",
+   b:["Three-month incubation: idea validation, business model and market testing.","4-week AI program: ChatGPT, email marketing, video and photo editing."]},
+  {w:"2023 – Jun 2025", t:"Economics: Money, Finance, Banking and Insurance (MFBA)", p:"ISFF Sousse, Institut Supérieur de Finance et Fiscalité"},
+  {w:"May 2024", t:"Professional Diploma in Infographics", p:"Horizon Academy of Professional Training (HAPT), Sousse",
+   b:["Graphic design and layout with Photoshop, Illustrator and InDesign; video with Premiere Pro and After Effects; UI/UX prototypes with Adobe XD."]},
+  {w:"Jun 2023", t:"Mathematics Baccalaureate", p:"Lycée Secondaire Sahloul 4, Sousse"}
+];
+const PATHS = [
+  {t:"Career Essentials in Project Management", s:"Microsoft & LinkedIn · 8 PMI- and NASBA-accredited courses · May 2026"},
+  {t:"Microsoft AI for Business & Finance Leaders", s:"Microsoft Learn · 2 trophies, 5 badges · Sep 2025"},
+  {t:"HP LIFE Innovation Insights", s:"HP Foundation · full entrepreneurship curriculum · Aug 2026"},
+  {t:"Nestlé Entrepreneurship Program", s:"Nestlé · 3 stages, 3 certificates · 2025"}
+];
+
+const CATS = {"Finance & Business":"💼","AI & Tech":"🤖","Entrepreneurship":"🚀","Marketing & Design":"🎨","Global & Society":"🌍","Health & Wellbeing":"🌸","Languages":"🗣️"};
+const CERTS = [
+  ["Finance & Business","Microsoft & LinkedIn","Career Essentials in Project Management","Scheduling, budgets, risk, stakeholders and teams.","May 2026"],
+  ["Finance & Business","IBM · Coursera","Introduction to Project Management","Project life cycle, planning and the project manager's role.","Sep 2026"],
+  ["Finance & Business","Great Learning","Project Management","Planning, executing and managing projects.",""],
+  ["Finance & Business","Atingi","Corporate Financing and Fundraising","Corporate financing, investment strategies and fundraising.",""],
+  ["Finance & Business","Edlal","Investing in Financial Markets","Financial markets, investment instruments and risk analysis.",""],
+  ["Finance & Business","MRUniversity","Principles of Economics: Microeconomics","Supply and demand, market structures and pricing.","Jan 2026"],
+  ["Finance & Business","Saylor Academy","Business Law","Legal principles of business operations and contracts.",""],
+  ["Finance & Business","Cambridge International Qualifications","International Staffing & Recruitment","How organizations source and select talent internationally.","Mar 2026"],
+  ["Finance & Business","Cambridge International Qualifications","Basics of International HR Management","HR practices across countries and cultures.","Mar 2026"],
+  ["Finance & Business","Cambridge International Qualifications","Basic Recruitment & Selection","Evaluating candidates and running interviews.","Mar 2026"],
+  ["Finance & Business","Santander","Critical Thinking and Problem Solving","Structured approaches to complex decisions.","Jan 2026"],
+  ["Finance & Business","Edraak","Customer Service","Communication and service quality for customer relations.",""],
+  ["Finance & Business","GCF Global Learning","Microsoft Access 2016: Introductory","Databases, forms, queries and data management.",""],
+  ["AI & Tech","Microsoft Learn","Microsoft AI for Business & Finance Leaders","AI strategy and use cases in financial services.","Sep 2025"],
+  ["AI & Tech","University of Helsinki","Elements of AI","Foundations of AI and its real-world uses.","Oct 2024"],
+  ["AI & Tech","University of Helsinki","Ethics of AI","Fairness, transparency, accountability and privacy in AI.","Dec 2025"],
+  ["AI & Tech","Harvard University","CS50's Computer Science for Business Professionals","Computer science concepts for business decisions.","Jan 2025"],
+  ["AI & Tech","Google","Discover AI in Daily Life","How AI powers everyday tools and decisions.","Jan 2026"],
+  ["AI & Tech","Incubadora Con Valores","AI Program: ChatGPT, Email Marketing, Video & Photo","4 weeks of practical AI for business.","Jul 2026"],
+  ["AI & Tech","Edlal","Introduction to AI","Key AI concepts and their role in technology.",""],
+  ["AI & Tech","Atingi","What is AI?","The basics of AI and its everyday uses.",""],
+  ["AI & Tech","Meta","Version Control","Managing code changes with version control systems.",""],
+  ["AI & Tech","OPSWAT Academy","Introduction to Critical Infrastructure Protection","Protecting critical systems and building resilience.","Jan 2026"],
+  ["AI & Tech","Horizon Academy","Professional Program in Front-End Web Development","HTML, CSS, JavaScript and front-end tools.",""],
+  ["AI & Tech","Simplilearn & Cursa","Introduction to HTML","Structuring and writing web pages.",""],
+  ["Entrepreneurship","HP LIFE","Innovation Insights Badge","Starting a business, design thinking, circular economy.","Aug 2026"],
+  ["Entrepreneurship","Nestlé","Entrepreneurship Program","Idea generation, solution creation, successful entrepreneur.","2025"],
+  ["Entrepreneurship","Cisco Networking Academy","Discovering Entrepreneurship","Fundamentals of business creation.",""],
+  ["Entrepreneurship","The Open University","Step up to Leadership","Communication, teamwork and decision-making.",""],
+  ["Entrepreneurship","Simplilearn SkillUP","Digital Leadership in Business","Digital transformation and leadership strategy.",""],
+  ["Entrepreneurship","Creativity House","Secrets of Success","Productivity and personal development.",""],
+  ["Marketing & Design","Semrush","Content Marketing Principles for Business","Content that drives business growth.",""],
+  ["Marketing & Design","ALEPH","AD Digital Expert","Digital advertising with online marketing tools.",""],
+  ["Marketing & Design","HubSpot Academy","Growth-Driven Design","Data-driven web design and continuous improvement.",""],
+  ["Marketing & Design","Horizon Academy","Digital Marketing","Digital marketing strategies and online promotion.",""],
+  ["Marketing & Design","Udemy","Adobe After Effects Essentials","Motion graphics and visual effects.",""],
+  ["Global & Society","University of London & SOAS","Global Diplomacy: Diplomacy in the Modern World","How diplomacy works, from states to global institutions.","Jun 2026"],
+  ["Global & Society","ITC-ILO","Introduction to International Labour Standards","How labour standards protect workers worldwide.","Sep 2026"],
+  ["Global & Society","Global Campus of Human Rights (EU co-funded)","Promoting and Protecting Human Rights","International human rights law and protection mechanisms.","Jan 2026"],
+  ["Global & Society","UNITAR","Sustainable Consumption and Production in Africa","Sustainability strategies for African contexts.","Sep 2025"],
+  ["Global & Society","INSSA & DisasterReady","Security Risk Management Professional (SRMP-R)","Threat analysis and risk mitigation.","Dec 2025"],
+  ["Global & Society","UN Volunteers","UNDSS BSAFE","UN security awareness and emergency response.","Mar 2026"],
+  ["Global & Society","Edraak","Women's Rights","Foundations of women's rights and equality.",""],
+  ["Health & Wellbeing","Stanford University School of Medicine","Identifying Early Signs of Psychosis in Adolescents and Young Adults","Accredited CME on youth mental health and early detection.","Sep 2026"],
+  ["Health & Wellbeing","Stanford University School of Medicine","Women's Health: Hormones and Hair Loss","Accredited CME on women's hormonal health.","Sep 2026"],
+  ["Health & Wellbeing","Edraak","Child Mental Health","Child psychology and mental well-being.",""],
+  ["Languages","EF SET","EF SET English Certificate","C1 Advanced English proficiency.","2025"],
+  ["Languages","U.S. Embassy Tunisia · MOOC","English for Business and Entrepreneurship","Professional English for startups and business.","2025"]
+];
+
+const EVENTS = [
+  ["Oct 2026","Hedera Cross Campus Challenge 2026","4C IHEC Sousse & Hedera","Blockchain bootcamps (HCF, HCDA) and a campus hackathon."],
+  ["1–2 Oct 2026","Global ADHD Conference 2026","Online","28 hours of international talks on ADHD research and support."],
+  ["23 Sep 2026","Cracking the UK Market","Tunisian British Chamber of Commerce & Novation City, with London Tech Week","Strategies for African startups entering the UK."],
+  ["30 Jul 2026","Diaspora Regional Networking 3.0","Novation City, Sousse","Investment, AI and innovation with the Tunisian diaspora."],
+  ["4 Jun 2026","Odoo Business Show Sousse","Odoo S.A., Sousse","How ERP supports the digital transformation of businesses."],
+  ["19 Nov 2025","Startup and Entrepreneurship Day (JSE2K25)","ISSAT Sousse, 4C Center","AI automation as an opportunity for digital entrepreneurship."],
+  ["31 Oct 2025","GAICA – Global AI Congress Africa","Novation City","AI, innovation and digital transformation across Africa."],
+  ["20 Oct 2025","Challenging Implicit Bias for Career Growth","University of the People · webinar","Recognizing unconscious bias in professional settings."],
+  ["30 Sep 2025","Innovation Camp","Injaz Tunisia","Idea generation, problem framing and a full Business Model Canvas."],
+  ["30 Sep 2025","Introduction to Entrepreneurship","Tunivisions, IHEC Sousse","From real problems to business opportunities, plus pitching."],
+  ["15 Jul 2025","Influencer Marketing, NestGen AI Edition","Nestlé · webinar","Digital strategy, authenticity and AI-driven content."]
+];
+
+/* ---------- TROPHIES ---------- */
+const TROPHIES = {
+  first:{i:"👣",n:"First steps",d:"Travel to a new region"},
+  castle:{i:"🏰",n:"Castle reached",d:"Arrive at NEXTQUEST Castle"},
+  explorer:{i:"🗺️",n:"World explorer",d:"Visit all 7 regions"},
+  reader:{i:"📜",n:"Quest reader",d:"Open an experience"},
+  scout:{i:"🔭",n:"Project scout",d:"Open a project"},
+  collector:{i:"🎒",n:"Collector",d:"Search or filter the inventory"},
+  side:{i:"🎟️",n:"Side quester",d:"Reach the events chapter"},
+  friend:{i:"💌",n:"New friend",d:"Copy my email"}
+};
+const got = new Set();
+const toast = document.getElementById("toast");
+let toastTimer;
+function unlock(k){
+  if(got.has(k)) return; got.add(k);
+  document.getElementById("toastIcon").textContent = TROPHIES[k].i;
+  document.getElementById("toastText").textContent = TROPHIES[k].n;
+  toast.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
+  updateProgress(); drawTrophies();
+  if(got.size===Object.keys(TROPHIES).length) confetti();
+}
+function updateProgress(){
+  const total=Object.keys(TROPHIES).length;
+  document.getElementById("trophyCount").textContent = `${got.size}/${total}`;
+  const pct = Math.round(10 + 90*(visited.size-1 + got.size)/(REGIONS.length-1+total));
+  document.getElementById("xpBar").style.width = pct+"%";
+  document.getElementById("xpText").textContent = pct+"%";
+}
+function drawTrophies(){
+  document.getElementById("trophyGrid").innerHTML = Object.entries(TROPHIES).map(([k,t])=>
+    `<div class="tro ${got.has(k)?"on":""}"><span class="i">${t.i}</span><b>${t.n}</b>${t.d}</div>`).join("");
+}
+
+/* ---------- MAP ---------- */
+const NS="http://www.w3.org/2000/svg", svg=document.getElementById("mapSvg"), strip=document.getElementById("strip"), panel=document.getElementById("panel");
+let current=0; const visited=new Set([0]);
+function mk(tag,attrs,parent){const e=document.createElementNS(NS,tag); for(const k in attrs)e.setAttribute(k,attrs[k]); parent&&parent.appendChild(e); return e;}
+let d=`M ${REGIONS[0].x} ${REGIONS[0].y}`;
+for(let k=1;k<REGIONS.length;k++){const a=REGIONS[k-1],b=REGIONS[k],my=(a.y+b.y)/2; d+=` C ${a.x} ${my}, ${b.x} ${my}, ${b.x} ${b.y}`;}
+mk("path",{d,fill:"none",stroke:"#f1e6d6","stroke-width":"16","stroke-linecap":"round"},svg);
+mk("path",{d,fill:"none",stroke:"#d9c3a5","stroke-width":"3","stroke-dasharray":"1 12","stroke-linecap":"round"},svg);
+// little decorations
+[[300,120,"🌷"],[30,280,"☁️"],[310,410,"✨"],[30,560,"🌸"],[300,700,"☁️"],[40,840,"✨"]].forEach(([x,y,s])=>{const t=mk("text",{x,y,"font-size":"20","text-anchor":"middle","aria-hidden":"true"},svg); t.textContent=s;});
+const nodes=REGIONS.map((r,k)=>{
+  const g=mk("g",{class:"node",tabindex:"0",role:"button","aria-label":`${r.name}, ${r.era}`},svg);
+  mk("circle",{class:"ring",cx:r.x,cy:r.y,r:r.castle?30:23},g);
+  const n=mk("text",{class:"num",x:r.x,y:r.y},g); n.textContent=r.castle?"♛":String(k+1).padStart(2,"0");
+  const right=r.x<170, lx=r.castle?r.x:(right?r.x+34:r.x-34), anchor=r.castle?"middle":(right?"start":"end"), ly=r.castle?r.y+50:r.y-4;
+  const l=mk("text",{class:"lbl",x:lx,y:ly,"text-anchor":anchor},g); l.textContent=r.name;
+  const e=mk("text",{class:"era",x:lx,y:ly+16,"text-anchor":anchor},g); e.textContent=r.era;
+  g.addEventListener("click",()=>go(k));
+  g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();go(k);}});
+  return g;
+});
+const walker=mk("g",{id:"walker"},svg);
+mk("circle",{cx:0,cy:-30,r:13,fill:"#bf4a70",stroke:"#3d2a30","stroke-width":"2"},walker);
+const wt=mk("text",{x:0,y:-30,"font-size":"11","text-anchor":"middle","dominant-baseline":"central",fill:"#fffdf9","font-family":"Fredoka, sans-serif","font-weight":"700"},walker); wt.textContent="IT";
+mk("path",{d:"M -5 -18 L 0 -10 L 5 -18 Z",fill:"#bf4a70"},walker);
+const stripBtns=REGIONS.map((r,k)=>{const b=document.createElement("button"); b.type="button"; b.textContent=(r.castle?"♛ ":String(k+1).padStart(2,"0")+" ")+r.name; b.onclick=()=>go(k); strip.appendChild(b); return b;});
+
+function render(){
+  const r=REGIONS[current];
+  panel.classList.remove("pop"); void panel.offsetWidth; panel.classList.add("pop");
+  panel.innerHTML=`
+    <div><p class="eyebrow">${r.castle?"Final region":"Region "+String(current+1).padStart(2,"0")} · ${r.era}</p>
+    <h3><span class="rg">${r.name}</span><br>${r.title}</h3></div>
+    <p class="story">${r.story}</p>
+    <div><p class="mini">Loot collected</p><ul class="loot">${r.loot.map(x=>`<li><span>${x}</span></li>`).join("")}</ul></div>
+    <div class="tags">${r.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <div class="pnav">
+      <button class="btn" type="button" id="prev" ${current===0?"disabled":""}>← Back</button>
+      ${current<REGIONS.length-1?`<button class="btn pink" type="button" id="next">Travel to ${REGIONS[current+1].name} →</button>`:`<a class="btn pink" href="#projects">Visit the workshop →</a>`}
+    </div>`;
+  document.getElementById("prev").onclick=()=>go(current-1);
+  const nx=document.getElementById("next"); if(nx) nx.onclick=()=>go(current+1);
+  nodes.forEach((n,k)=>{n.classList.toggle("active",k===current); n.classList.toggle("visited",visited.has(k)&&k!==current);});
+  stripBtns.forEach((b,k)=>{b.classList.toggle("active",k===current); b.classList.toggle("visited",visited.has(k));});
+  walker.style.transform=`translate(${r.x}px, ${r.y}px)`;
+}
+function go(k){
+  if(k<0||k>=REGIONS.length) return;
+  current=k; visited.add(k); render();
+  stripBtns[k].scrollIntoView({block:"nearest",inline:"center"});
+  if(k!==0) unlock("first");
+  if(REGIONS[k].castle) unlock("castle");
+  if(visited.size===REGIONS.length) unlock("explorer");
+  updateProgress();
+}
+render();
+
+/* ---------- QUESTS ---------- */
+document.getElementById("questList").innerHTML = QUESTS.map((q,i)=>`
+  <details class="quest" ${i===0?"open":""}>
+    <summary><span class="q-ico" aria-hidden="true">${q.ico}</span>
+      <span><span class="q-title">${q.t}</span>${q.now?'<span class="status">Active</span>':""}<br><span class="q-org">${q.o}</span></span>
+      <span class="q-when">${q.w}<span class="q-plus" aria-hidden="true">+</span></span></summary>
+    <div class="q-body"><p>${q.intro}</p><ul>${q.b.map(x=>`<li>${x}</li>`).join("")}</ul>
+      <div class="tags">${q.s.map(s=>`<span class="tag">${s}</span>`).join("")}</div></div>
+  </details>`).join("");
+let questsReady=false;
+document.querySelectorAll("details.quest").forEach(dt=>dt.addEventListener("toggle",()=>{ if(dt.open && questsReady) unlock("reader"); }));
+setTimeout(()=>questsReady=true,0);
+
+/* ---------- PROJECTS ---------- */
+const projDlg=document.getElementById("projDlg"), projBody=document.getElementById("projBody");
+document.getElementById("projGrid").innerHTML = PROJECTS.map(p=>`
+  <button class="proj ${p.star?"star":""}" type="button" data-p="${p.id}">
+    <span class="p-ico" aria-hidden="true">${p.ico}</span>
+    <h3>${p.t}${p.tag?` <span class="status">${p.tag}</span>`:""}</h3>
+    <p>${p.s}</p><span class="open">Open the project →</span>
+  </button>`).join("");
+document.querySelectorAll(".proj").forEach(b=>b.addEventListener("click",()=>{
+  const p=PROJECTS.find(x=>x.id===b.dataset.p);
+  projBody.innerHTML=`<button class="btn close" type="button" data-close>Close</button><span style="font-size:36px" aria-hidden="true">${p.ico}</span><h3 id="pd-title">${p.t}</h3>${p.body}`;
+  projDlg.showModal(); unlock("scout");
+}));
+document.querySelectorAll("dialog").forEach(dl=>{
+  dl.addEventListener("click",e=>{ if(e.target===dl || e.target.closest("[data-close]")) dl.close(); });
+});
+document.getElementById("trophyBtn").addEventListener("click",()=>{drawTrophies(); document.getElementById("trophyDlg").showModal();});
+
+/* ---------- EDUCATION ---------- */
+document.getElementById("eduList").innerHTML = EDU.map(e=>`
+  <div class="edu ${e.now?"now":""}"><span class="when">${e.w}</span><h3>${e.t}</h3><div class="where">${e.p}</div>
+  ${e.b?`<ul>${e.b.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`).join("");
+document.getElementById("pathList").innerHTML = PATHS.map(p=>`<div class="path"><b>${p.t}</b><span>${p.s}</span></div>`).join("");
+
+/* ---------- INVENTORY ---------- */
+const chips=document.getElementById("chips"), grid=document.getElementById("grid"), search=document.getElementById("search"), count=document.getElementById("count");
+let cat="All";
+["All",...Object.keys(CATS)].forEach(c=>{
+  const b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=c==="All"?"All":`${CATS[c]} ${c}`; b.dataset.c=c;
+  b.setAttribute("aria-pressed",c===cat);
+  b.onclick=()=>{cat=c; [...chips.children].forEach(x=>x.setAttribute("aria-pressed",x.dataset.c===c)); drawGrid(); unlock("collector");};
+  chips.appendChild(b);
+});
+search.addEventListener("input",()=>{drawGrid(); if(search.value.trim()) unlock("collector");});
+function drawGrid(){
+  const q=search.value.trim().toLowerCase();
+  const list=CERTS.filter(([c,i,n,ds])=>(cat==="All"||c===cat)&&(!q||(i+" "+n+" "+ds+" "+c).toLowerCase().includes(q)));
+  count.textContent = `${list.length} of ${CERTS.length} shown · selection from 120+ certificates`;
+  grid.innerHTML = list.length ? list.map(([c,i,n,ds,dt])=>`
+    <div class="item"><span class="iss">${i}</span><span class="nm">${n}</span><span class="ds">${ds}</span>
+    <span class="dt">${CATS[c]} ${c}${dt?" · "+dt:""}</span></div>`).join("") : `<p class="empty">No certificate matches “${search.value}”. Try another word.</p>`;
+}
+drawGrid();
+
+/* ---------- EVENTS ---------- */
+document.getElementById("evList").innerHTML = EVENTS.map(([d,t,o,p])=>`<div class="ev"><span class="d">${d}</span><b>${t}</b><span class="o">${o}</span><p>${p}</p></div>`).join("");
+const io=("IntersectionObserver" in window)?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){unlock("side"); io.disconnect();}}),{threshold:.2}):null;
+io && io.observe(document.getElementById("events"));
+
+/* ---------- CONTACT ---------- */
+document.getElementById("copy").addEventListener("click",e=>{
+  const btn=e.currentTarget, txt=document.getElementById("mail").textContent;
+  const ok=()=>{btn.textContent="Copied!"; setTimeout(()=>btn.textContent="Copy my email",1800);};
+  const sel=()=>{const r=document.createRange(); r.selectNodeContents(document.getElementById("mail")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent="Selected, press copy";};
+  try{navigator.clipboard.writeText(txt).then(ok).catch(sel);}catch(err){sel();}
+  unlock("friend");
+});
+
+/* ---------- CONFETTI ---------- */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=document.getElementById("confetti"), x=c.getContext("2d"); c.width=innerWidth; c.height=innerHeight;
+  const cols=["#f4bccb","#bf4a70","#d9c3a5","#f1e6d6","#fde8ee"];
+  const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,s:5+Math.random()*6,r:Math.random()*6,c:cols[Math.floor(Math.random()*cols.length)]}));
+  let t=0; (function f(){ x.clearRect(0,0,c.width,c.height); ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=.1; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle=p.c; x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); x.restore();}); if(++t<220) requestAnimationFrame(f); else x.clearRect(0,0,c.width,c.height); })();
+}
+updateProgress(); drawTrophies();
+</script>
+
+</body>
+</html>
